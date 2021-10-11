@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -30,7 +31,7 @@ public class User {
     private Set<Role> roles;
 
     @OneToMany
-    private Set<User> friends;
+    private Set<User> friends = new HashSet<>();
 
     public void addUser(User user){
         friends.add(user);
