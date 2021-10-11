@@ -28,7 +28,7 @@ public class MessageService {
     }
 
     @Transactional(readOnly = true)
-    public Optional<Dialog> getDialogById(Long id){
+    public Optional<Dialog> getDialogById(Long id) {
         return dialogRepository.findById(id);
     }
 
@@ -43,24 +43,17 @@ public class MessageService {
             return Optional.of(dialog.get(0));
     }
 
-    @Transactional(readOnly = true)
-    public List<Message> getMessageListForUser(User currentUser, User messagingToUser) throws NullPointerException {
-        var dialog = getDialogForUser(currentUser, messagingToUser);
-        if (dialog.isEmpty())
-            throw new NullPointerException();
-        return dialog.get().getMessageList();
-    }
-
     @Transactional
     public Dialog addNewDialogIfEmpty(User currentUser, User messagingToUser) {
-        if (getDialogForUser(currentUser, messagingToUser).isEmpty()) {
+        var dialog = getDialogForUser(currentUser, messagingToUser);
+        if (dialog.isEmpty()) {
             var d = new Dialog();
             d.addUser(currentUser);
             d.addUser(messagingToUser);
             dialogRepository.save(d);
             return d;
         } else {
-            return getDialogForUser(currentUser, messagingToUser).get();
+            return dialog.get();
         }
     }
 

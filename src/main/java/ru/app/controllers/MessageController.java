@@ -11,7 +11,6 @@ import ru.app.models.Message;
 import ru.app.services.MessageService;
 import ru.app.services.UserService;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Controller

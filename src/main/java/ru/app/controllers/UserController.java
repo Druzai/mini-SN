@@ -1,19 +1,19 @@
 package ru.app.controllers;
 
-import org.springframework.web.bind.annotation.PathVariable;
-import ru.app.components.UserValidator;
-import ru.app.models.Role;
-import ru.app.models.User;
-import ru.app.services.RoleService;
-import ru.app.services.SecurityService;
-import ru.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import ru.app.components.UserValidator;
+import ru.app.models.Role;
+import ru.app.models.User;
+import ru.app.services.RoleService;
+import ru.app.services.SecurityService;
+import ru.app.services.UserService;
 
 import java.util.stream.Collectors;
 

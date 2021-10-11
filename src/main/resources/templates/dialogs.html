@@ -15,6 +15,7 @@
 
 <div class="m-5 text-center">
     <div th:each="dialog : ${dialogs}" class="mt-2 card bg-light justify-content-center align-items-center">
+        <b><span th:text="'Диалог №' + ${dialog.getId()}"></span></b>
         <span>Пользователи: </span>
         <b><span th:each="user : ${dialog.userList}" th:text="' ' + ${user.getUsername()}"></span></b>
         <a th:href="'/dialog/'+ ${dialog.getId()}">Подробнее</a>

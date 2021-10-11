@@ -15,7 +15,7 @@
 
 <div class="m-5 text-center">
     <div th:each="message : ${messages}" class="mt-2 card bg-light justify-content-center align-items-center">
-        <b><p th:text="${message.getUser().getUsername()}"></p></b>
+        <b><span th:text="${message.getUser().getUsername()}"></span></b>
         <p th:text="${message.getContent()}"></p>
     </div>
     <form th:action="@{/dialog/{id}(id=${dialogId})}" th:object="${message}" method="POST">

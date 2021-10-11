@@ -1,12 +1,12 @@
 package ru.app.components;
 
-import ru.app.models.User;
-import ru.app.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.ValidationUtils;
 import org.springframework.validation.Validator;
+import ru.app.models.User;
+import ru.app.services.UserService;
 
 @Component
 public class UserValidator implements Validator {

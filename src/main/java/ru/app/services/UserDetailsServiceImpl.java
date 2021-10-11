@@ -1,8 +1,5 @@
 package ru.app.services;
 
-import ru.app.models.Role;
-import ru.app.models.User;
-import ru.app.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -11,6 +8,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.app.models.Role;
+import ru.app.models.User;
+import ru.app.repositories.UserRepository;
 
 import java.util.HashSet;
 import java.util.Set;
