@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" th:href="@{/img/favicon.ico}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+
+    <title th:text="${userName} + ' | SN'"></title>
+</head>
+<body>
+<nav th:replace="/parts/navbar :: navbar"></nav>
+
+<div class="m-5 text-center">
+    <p th:if="${me}">Добро пожаловать на вашу страницу</p>
+    <p th:if="${!me}" th:text="'Добро пожаловать на страницу ' + ${userName}"></p>
+    <p th:if="${!userFriends.isEmpty()}" style="align-content: center">Список друзей пользователя:</p>
+    <div th:if="${!userFriends.isEmpty()}" th:each="friend : ${userFriends}" class="mt-2 card bg-light"
+         style="margin: 10px; border-radius: 7px">
+        <h4 th:text="${friend.getUsername()}"></h4>
+    </div>
+    <p th:if="${userFriends.isEmpty()}" style="align-content: center">У этого пользователя нет друзей :(</p>
+
+    <div th:if="${!me}">
+        <div style="align-content: center" th:if="${userForm != null}">
+            <form th:action="@{/user/add}" th:object="${userForm}" method="POST">
+                <input type="hidden" th:field="*{id}"/>
+                <input type="hidden" th:field="*{username}"/>
+                <input type="hidden" th:field="*{password}"/>
+                <input type="hidden" th:field="*{roles}"/>
+                <input type="hidden" th:field="*{friends}"/>
+                <button type="submit" class="btn btn-primary btn-small"
+                        style="border-color: #20fc72; background-color: #00ff5e; color: #ffffff">Добавить в друзья
+                </button>
+            </form>
+        </div>
+        <form th:if="${userForm == null}" th:action="@{/dialog/new/{id}(id=${userId})}" method="POST" style="align-content: center">
+            <button th:text="'Начать чат с ' + ${userName}" type="submit" class="btn btn-primary btn-small"
+                    style="border-color: #20fcd4; background-color: #367979; color: #ffffff"></button>
+        </form>
+    </div>
+</div>
+
+<footer th:replace="/parts/footer :: footer"></footer>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js/}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/setActiveNavLink.js/}"></script>
+</body>
+</html>

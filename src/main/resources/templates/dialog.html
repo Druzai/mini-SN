@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      lang="ru">
+<head>
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="icon" th:href="@{/img/favicon.ico}">
+    <link rel="stylesheet" type="text/css" th:href="@{/webjars/bootstrap/5.0.1/css/bootstrap.min.css}"/>
+
+    <title th:text="'Диалог c ' + ${toUserName} + ' | SN'"></title>
+</head>
+<body>
+<nav th:replace="/parts/navbar :: navbar"></nav>
+
+<div class="m-5 text-center">
+    <div th:each="message : ${messages}" class="mt-2 card bg-light justify-content-center align-items-center">
+        <b><p th:text="${message.getUser().getUsername()}"></p></b>
+        <p th:text="${message.getContent()}"></p>
+    </div>
+    <form th:action="@{/dialog/{id}(id=${dialogId})}" th:object="${message}" method="POST">
+        <input type="hidden" th:field="*{user}"/>
+        <label>
+            Сообщение:
+            <input th:field="*{content}"/>
+        </label>
+        <button type="submit" class="btn btn-primary btn-small"
+                style="border-color: #21cbff; background-color: #004991; color: #ffffff">Отправить
+        </button>
+    </form>
+</div>
+
+<footer th:replace="/parts/footer :: footer"></footer>
+<script type="text/javascript" th:src="@{/webjars/jquery/3.6.0/jquery.min.js/}"></script>
+<script type="text/javascript" th:src="@{/webjars/bootstrap/5.0.1/js/bootstrap.min.js}"></script>
+<script type="text/javascript" th:src="@{/js/setActiveNavLink.js/}"></script>
+</body>
+</html>
