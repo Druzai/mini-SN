@@ -13,23 +13,25 @@
 <body style="margin-bottom: 95px">
 <nav th:replace="/parts/navbar :: navbar"></nav>
 
-<div class="m-5 text-center bottom-0">
+<p th:if="${messages.isEmpty()}" class="m-5 text-center">В этом диалоге пока нет сообщений :(</p>
+<div class="m-5 text-center bottom-0" th:if="${!messages.isEmpty()}">
     <div th:each="message : ${messages}" class="mt-2 card bg-light justify-content-center align-items-center">
         <b><span th:text="${message.getUser().getUsername()}"></span></b>
         <p th:text="${message.getContent()}"></p>
     </div>
 </div>
 <div class="fixed-bottom bg-light" style="bottom: 50px">
-<form th:action="@{/dialog/{id}(id=${dialogId})}" th:object="${message}" method="POST" class="m-0 text-center">
-    <input type="hidden" th:field="*{user}"/>
-    <label>
-        Сообщение:
-        <input th:field="*{content}"/>
-    </label>
-    <button type="submit" class="btn btn-primary btn-small" id="send_button"
-            style="border-color: #21cbff; background-color: #004991; color: #ffffff">Отправить
-    </button>
-</form></div>
+    <form th:action="@{/dialog/{id}(id=${dialogId})}" th:object="${message}" method="POST" class="m-0 text-center">
+        <input type="hidden" th:field="*{user}"/>
+        <label>
+            Сообщение:
+            <input th:field="*{content}"/>
+        </label>
+        <button type="submit" class="btn btn-primary btn-small" id="send_button"
+                style="border-color: #21cbff; background-color: #004991; color: #ffffff">Отправить
+        </button>
+    </form>
+</div>
 <span style="display:none" id="name" th:text="${toUserName}"></span>
 <span style="display:none" id="orig_name" th:text="${message.getUser().getUsername()}"></span>
 

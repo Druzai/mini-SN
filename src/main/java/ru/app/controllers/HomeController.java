@@ -15,11 +15,6 @@ public class HomeController {
         return "index";
     }
 
-    /**
-     * Возвращение страницы с ошибкой 404
-     *
-     * @return страница "error"
-     */
     @GetMapping("/error")
     public String getError() {
         return "error";

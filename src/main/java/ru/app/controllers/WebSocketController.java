@@ -6,7 +6,7 @@ import org.springframework.stereotype.Controller;
 import ru.app.components.WSMessage;
 
 @Controller
-public class WSController {
+public class WebSocketController {
     @MessageMapping("/send")
     @SendTo("/topic/messages")
     public WSMessage greeting(WSMessage message) throws InterruptedException {
