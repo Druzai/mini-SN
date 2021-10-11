@@ -36,10 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         "/img/**",
                         "/registration",
                         "/",
-                        "/products",
-                        "/product/{vendorCode:\\d+}",
-                        "/product/imageDisplay**",
-                        "/search**"
+                        "/login"
                 ).permitAll()
                 .antMatchers("**").authenticated()
                 .anyRequest().authenticated()

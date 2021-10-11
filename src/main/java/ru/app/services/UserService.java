@@ -10,6 +10,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
 @Service
 @Slf4j
 public class UserService {
@@ -31,6 +35,22 @@ public class UserService {
     public User findByUsername(String username) {
         log.info("Find user by username - " + username);
         return userRepository.findByUsername(username);
+    }
+
+    @Transactional(readOnly = true)
+    public Optional<User> findById(Long Id){
+        return userRepository.findById(Id);
+    }
+
+    @Transactional(readOnly = true)
+    public List<User> getUserList(){
+        return userRepository.findAll();
+    }
+
+    @Transactional
+    public void addFriend(User user, User addUser){
+        user.addUser(addUser);
+        userRepository.save(user);
     }
 
     @Transactional(readOnly = true)

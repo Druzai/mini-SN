@@ -1,5 +1,6 @@
 package ru.app.controllers;
 
+import org.springframework.web.bind.annotation.PathVariable;
 import ru.app.components.UserValidator;
 import ru.app.models.Role;
 import ru.app.models.User;
@@ -16,41 +17,20 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.stream.Collectors;
 
-/**
- * Контроллер для регистрации и входа пользователей.
- */
 @Controller
 public class UserController {
-    /**
-     * Служба для работы с пользователями.
-     */
     @Autowired
     private UserService userService;
 
-    /**
-     * Служба для работы с ролями.
-     */
     @Autowired
     private RoleService roleService;
 
-    /**
-     * Служба для работы с аутентификацией пользователей.
-     */
     @Autowired
     private SecurityService securityService;
 
-    /**
-     * Служба для работы с проверкой логина и пароля от пользователей.
-     */
     @Autowired
     private UserValidator userValidator;
 
-    /**
-     * Получение страницы регистрации.
-     *
-     * @param model модель страницы
-     * @return страница "registration"
-     */
     @GetMapping("/registration")
     public String registration(Model model) {
         if (securityService.isAuthenticated()) {
@@ -63,14 +43,6 @@ public class UserController {
         return "registration";
     }
 
-    /**
-     * Обработка регистрации пользователя.
-     *
-     * @param userForm      класс пользователя
-     * @param bindingResult класс содержащий ошибки проверки при HTTP запросе
-     * @param model         модель страницы
-     * @return перенаправление на адрес "/"
-     */
     @PostMapping("/registration")
     public String registration(@ModelAttribute("userForm") User userForm, BindingResult bindingResult, Model model) {
         userValidator.validate(userForm, bindingResult);
@@ -86,14 +58,6 @@ public class UserController {
         return "redirect:/";
     }
 
-    /**
-     * Получение страницы входа.
-     *
-     * @param model  модель страницы
-     * @param error  строка ошибок
-     * @param logout строка выхода из аккаунта
-     * @return страница "login"
-     */
     @GetMapping("/login")
     public String login(Model model, String error, String logout) {
         if (securityService.isAuthenticated()) {
@@ -109,13 +73,7 @@ public class UserController {
         return "login";
     }
 
-    /**
-     * Получение страницы личного кабинета пользователя.
-     *
-     * @param model модель страницы
-     * @return страница "user"
-     */
-    @GetMapping("/user")
+    @GetMapping("/me")
     public String getUser(Model model) {
         var user = userService.getUser();
         model.addAttribute("userRole", user.getRoles().stream().map(Role::getName).collect(Collectors.joining(", ")));
@@ -124,14 +82,7 @@ public class UserController {
         return "user";
     }
 
-    /**
-     * Обработка изменения роли пользователя.
-     *
-     * @param userForm класс пользователя
-     * @param model    модель страницы
-     * @return страница "user"
-     */
-    @PostMapping("/user")
+    @PostMapping("/me")
     public String setUserRole(@ModelAttribute("userForm") User userForm, Model model) {
         var user = userService.getUser();
         user.setRoles(userForm.getRoles());
@@ -140,5 +91,41 @@ public class UserController {
         model.addAttribute("allRoles", roleService.getRoles());
         model.addAttribute("userForm", userForm);
         return "user";
+    }
+
+    @GetMapping("/user/{id}")
+    public String getUser(@PathVariable int id, Model model) {
+        var user = userService.findById((long) id);
+        if (user.isEmpty()) {
+            model.addAttribute("reason", "Не найден пользователь с id " + id);
+            return "error";
+        } else {
+            model.addAttribute("userId", user.get().getId());
+            model.addAttribute("userName", user.get().getUsername());
+            model.addAttribute("userFriends", user.get().getFriends());
+            if (userService.getUser() == user.get())
+                model.addAttribute("me", true);
+            else {
+                model.addAttribute("me", false);
+                if (userService.getUser().getFriends().contains(user.get()))
+                    model.addAttribute("userForm", null);
+                else
+                    model.addAttribute("userForm", user.get());
+            }
+            return "other_user";
+        }
+    }
+
+    @PostMapping("/user/add")
+    public String addUser(@ModelAttribute("userForm") User userForm, Model model) {
+        userService.addFriend(userService.getUser(), userForm);
+        userService.addFriend(userForm, userService.getUser());
+        return "redirect:/user/" + userForm.getId().toString();
+    }
+
+    @GetMapping("/users")
+    public String getUsers(Model model) {
+        model.addAttribute("users", userService.getUserList());
+        return "users";
     }
 }

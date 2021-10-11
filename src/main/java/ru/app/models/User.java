@@ -28,4 +28,11 @@ public class User {
 
     @ManyToMany
     private Set<Role> roles;
+
+    @OneToMany
+    private Set<User> friends;
+
+    public void addUser(User user){
+        friends.add(user);
+    }
 }
