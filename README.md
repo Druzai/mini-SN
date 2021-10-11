@@ -1,1 +1,1 @@
-# mini-SN
+# Project `mini-SN`
