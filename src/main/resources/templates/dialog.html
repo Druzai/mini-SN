@@ -14,9 +14,9 @@
 <nav th:replace="/parts/navbar :: navbar"></nav>
 
 <p th:if="${messages.isEmpty()}" class="m-5 text-center">В этом диалоге пока нет сообщений :(</p>
-<div class="m-5 text-center bottom-0" th:if="${!messages.isEmpty()}">
+<div id="dialogList" class="m-5 text-center bottom-0" th:if="${!messages.isEmpty()}">
     <div th:each="message : ${messages}" class="mt-2 card bg-light justify-content-center align-items-center">
-        <b><span th:text="${message.getUser().getUsername()}"></span></b>
+        <b th:text="${message.getUser().getUsername()}"></b>
         <p th:text="${message.getContent()}"></p>
     </div>
 </div>
